@@ -17,6 +17,11 @@ public class Interactor : MonoBehaviour
         playerCamera = GetComponentInChildren<Camera>();
     }
 
+    public void SetPlayerCamera(Camera camera)
+    {
+        playerCamera = camera;
+    }
+
     private void Update()
     {
         UpdateFocus();

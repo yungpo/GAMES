@@ -9,6 +9,11 @@ public class GeneratorInteractable : Interactable
 
     private bool isRunning;
 
+    public void SetGeneratorAudio(AudioSource audio)
+    {
+        generatorAudio = audio;
+    }
+
     protected override void OnInteract(GameObject interactor)
     {
         isRunning = !isRunning;

@@ -9,6 +9,11 @@ public class SubtitleManager : MonoBehaviour
 
     private Coroutine activeRoutine;
 
+    public void SetText(TextMeshProUGUI text)
+    {
+        subtitleText = text;
+    }
+
     public void ShowLine(string line)
     {
         ShowLine(line, defaultDuration);

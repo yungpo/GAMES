@@ -13,6 +13,11 @@ public class LightSwitchInteractable : Interactable
         }
     }
 
+    public void SetTargetLight(Light light)
+    {
+        targetLight = light;
+    }
+
     protected override void OnInteract(GameObject interactor)
     {
         if (targetLight == null)

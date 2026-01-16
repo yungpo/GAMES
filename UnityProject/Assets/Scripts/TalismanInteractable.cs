@@ -1,14 +1,15 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-public class RadioInteractable : Interactable
+public class TalismanInteractable : Interactable
 {
-    [SerializeField] private AudioSource radioAudio;
     [SerializeField] private SubtitleManager subtitleManager;
     [TextArea]
-    [SerializeField] private string subtitleLine = "...не выходи...";
+    [SerializeField] private string subtitleLine = "Ветер усилился. Кажется, кто-то рядом.";
     [SerializeField] private float subtitleDuration = 3f;
-    [SerializeField] private UnityEvent onRadioUsed;
+    [SerializeField] private UnityEvent onTalismanMoved;
+
+    private bool hasMoved;
 
     public void SetSubtitleManager(SubtitleManager manager)
     {
@@ -17,16 +18,17 @@ public class RadioInteractable : Interactable
 
     protected override void OnInteract(GameObject interactor)
     {
-        if (radioAudio != null)
+        if (hasMoved)
         {
-            radioAudio.Play();
+            return;
         }
 
+        hasMoved = true;
         if (subtitleManager != null && !string.IsNullOrWhiteSpace(subtitleLine))
         {
             subtitleManager.ShowLine(subtitleLine, subtitleDuration);
         }
 
-        onRadioUsed?.Invoke();
+        onTalismanMoved?.Invoke();
     }
 }
