@@ -2,12 +2,15 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using UnityEngine.Rendering;
 
 public class DemoBootstrap
 {
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
     private static void Bootstrap()
     {
+        ValidateRenderPipeline();
+
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
@@ -184,6 +187,12 @@ public class DemoBootstrap
         if (renderer != null && material != null)
         {
             renderer.material = material;
+            return;
+        }
+
+        if (renderer == null)
+        {
+            Debug.LogWarning($"Renderer missing on {target.name}. Material was not applied.");
         }
     }
 
@@ -193,15 +202,37 @@ public class DemoBootstrap
         if (renderer != null)
         {
             renderer.material.color = color;
+            return;
         }
+
+        Debug.LogWarning($"Renderer missing on {target.name}. Material color was not applied.");
     }
 
     private static Material CreateMaterial(Color color)
     {
         Shader shader = Shader.Find("Universal Render Pipeline/Lit");
-        Material material = shader != null ? new Material(shader) : new Material(Shader.Find("Standard"));
+        if (shader == null)
+        {
+            Debug.LogWarning("URP shader not found. Ensure URP Render Pipeline Asset is assigned in Project Settings > Graphics.");
+        }
+
+        Shader fallback = Shader.Find("Standard");
+        if (shader == null && fallback == null)
+        {
+            Debug.LogWarning("Standard shader not found. Materials may appear white.");
+        }
+
+        Material material = shader != null ? new Material(shader) : new Material(fallback);
         material.color = color;
         return material;
+    }
+
+    private static void ValidateRenderPipeline()
+    {
+        if (GraphicsSettings.renderPipelineAsset == null)
+        {
+            Debug.LogWarning("Render Pipeline Asset is not assigned. In URP projects, assign it in Project Settings > Graphics.");
+        }
     }
 
     private static AudioClip CreateNoiseClip(float durationSeconds, float volume)

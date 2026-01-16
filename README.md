@@ -30,3 +30,7 @@ TextMeshPro (TMP) is required for subtitles and UI prompts.
 - Swap the primitive objects in `DemoBootstrap` with prefabs (cabin, generator, radio, talisman).
 - Replace procedural audio by assigning AudioClips to the AudioSources in `DemoBootstrap`.
 - Add URP Volume with VHS/pixelation effects for final look.
+
+## Troubleshooting: All White Materials
+- Ensure a URP Render Pipeline Asset is assigned in Project Settings → Graphics.
+- Check the Console for warnings from `DemoBootstrap` about missing URP shaders or render pipeline settings.
